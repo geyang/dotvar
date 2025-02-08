@@ -21,7 +21,7 @@ setup(
     description="A simple module to load environment variables from a .env file",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/geyang/dot-env",  # Replace with your actual repository URL
+    url="https://github.com/geyang/dotvar",  # Replace with your actual repository URL
     packages=find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
