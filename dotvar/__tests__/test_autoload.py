@@ -56,7 +56,6 @@ def test_autoload(temp_env_dir, clear_env, monkeypatch):
     assert os.environ.get("API_KEY") == "s3cr3t_api"
 
 
-
 def test_autoload_without_env_file(clear_env, monkeypatch):
     """
     Tests that importing dotvar.auto_load without a .env file raises FileNotFoundError
