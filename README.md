@@ -1,32 +1,32 @@
-# dot_env, a Python module to load environment variables from a `.env` file
+# dotvar, a Python module to load environment variables from a `.env` file
 
 A simple Python module to load environment variables from a `.env` file.
 
 ## Installation
 
 ```bash
-pip install dot-env
+pip install dotvar
 ```
 
 ## Simple Usage
 
 ```python
-import dot_env
+import dotvar
 
 # Load environment variables from the nearest .env file
-dot_env.load_env()
+dotvar.load_env()
 
 # Or specify the path to the .env file
-dot_env.load_env(env_path="/path/to/your/.env")
+dotvar.load_env(env_path="/path/to/your/.env")
 ```
 
 ## A Detailed Example
 
 ```python
-import dot_env
+import dotvar
 
 # Load environment variables from the nearest .env file
-dot_env.load_env()
+dotvar.load_env()
 
 # Now you can access the variables via os.environ
 import os

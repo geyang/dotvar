@@ -14,7 +14,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name="dot-env",  # Updated package name
+    name="dotvar",  # Updated package name
     version=version,
     author="Ge Yang",  # Updated author name
     author_email="ge.ike.yang@gmail.com",  # Updated author email

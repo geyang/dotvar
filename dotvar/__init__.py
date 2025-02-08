@@ -1,4 +1,4 @@
-# dot_env/__init__.py
+# dotvar/__init__.py
 
 from .env_loader import load_env
 

@@ -1,4 +1,4 @@
-# dot_env/env_loader.py
+# dotvar/env_loader.py
 
 import os
 from pathlib import Path

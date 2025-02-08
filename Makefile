@@ -1,7 +1,7 @@
 .PHONY: help install test build clean upload
 
 # Variables
-PACKAGE_NAME = dot-env
+PACKAGE_NAME = dotvar
 PYTHON = python3
 TWINE = twine
 
@@ -25,5 +25,5 @@ build:
 clean:
 	rm -rf build/ dist/ *.egg-info
 
-upload: build
+publish: clean test build
 	$(TWINE) upload dist/*

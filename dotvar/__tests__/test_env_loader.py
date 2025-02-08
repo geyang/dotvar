@@ -3,7 +3,7 @@
 import os
 import tempfile
 import pytest
-from dot_env import load_env
+from dotvar import load_env
 
 
 @pytest.fixture
