@@ -1,0 +1,27 @@
+# IDE specific files
+.idea/
+*.iml
+.vscode/
+
+# macOS specific files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Python distribution / packaging
+*.egg-info/
+*.egg
+build/
+dist/
+
+# Virtual environments
+.venv/
+.env/
+ENV/
+env/
+
