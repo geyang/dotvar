@@ -1,6 +1,34 @@
-# dotvar, a Python module to load environment variables from a `.env` file
+# dotvar: Enhanced Environment Variable Management for Python
 
-A simple Python module to load environment variables from a `.env` file.
+A simple Python module to load environment variables from a `.env` file with robust interpolation support.
+
+## Rationale
+
+Managing environment variables is essential for configuring applications without hardcoding sensitive information. Using a `.env` file centralizes configuration parameters, enhancing security and maintainability.
+
+### The Problem with `python-dotenv`
+
+While `python-dotenv` is a popular choice for loading environment variables, it has a notable limitation: **it does not support variable interpolation**. This means that environment variables cannot reference other variables within the `.env` file, leading to redundancies and increased potential for errors. For example:
+
+```env
+BASE_URL=https://api.example.com
+API_ENDPOINT=${BASE_URL}/v1/
+```
+
+In `python-dotenv`, `API_ENDPOINT` would not automatically resolve to `https://api.example.com/v1/`, requiring manual concatenation in your code:
+
+```python
+import os
+
+base_url = os.environ.get("BASE_URL")
+api_endpoint = os.environ.get("API_ENDPOINT")  # Would be "${BASE_URL}/v1/" instead of the resolved URL
+```
+
+This lack of interpolation support can lead to repetitive configurations and make the environment setup less intuitive.
+
+## Introducing `dotvar`
+
+`dotvar` addresses the limitations of `python-dotenv` by providing **robust variable interpolation** capabilities. This feature allows environment variables to reference and build upon each other within the `.env` file, promoting DRY (Don't Repeat Yourself) principles and reducing redundancy.
 
 ## Installation
 
@@ -20,61 +48,38 @@ dotvar.load_env()
 dotvar.load_env(env_path="/path/to/your/.env")
 ```
 
-## A Detailed Example
+## Interpolated Variables
 
-```python
-import dotvar
+`dotvar` supports variable interpolation, enabling environment variables to reference other variables within the `.env` file. This feature enhances flexibility and reduces duplication in configuration files.
 
-# Load environment variables from the nearest .env file
-dotvar.load_env()
+### Example `.env` File
 
-# Now you can access the variables via os.environ
-import os
-
-database_url = os.environ.get("DATABASE_URL")
-secret_key = os.environ.get("SECRET_KEY")
-debug_mode = os.environ.get("DEBUG")
-
-print(f"Database URL: {database_url}")
-print(f"Secret Key: {secret_key}")
-print(f"Debug Mode: {debug_mode}")
+```env
+# Sample .env file with interpolated variables
+BASE_URL=https://api.example.com
+API_ENDPOINT=${BASE_URL}/v1/
+SECRET_KEY=s3cr3t
+API_KEY=${SECRET_KEY}_api
 ```
 
-## To Develop:
+### Usage in Python
 
-### Description of Makefile Targets
-- **help**: Displays available Makefile targets.
-- **install**: Installs or upgrades the necessary packaging tools (`pip`, `setuptools`, `wheel`, and `twine`).
-- **test**: Runs the test suite using `unittest`.
-- **build**: Builds the source and wheel distribution packages.
-- **clean**: Removes build artifacts to ensure a clean state.
-- **upload**: Uploads the built distribution packages to PyPI using `twine`. This target depends on the `build` target.
+```python
+import os
+import dotvar
 
-### Usage
+# Load environment variables from the .env file
+dotvar.load_env()
 
-To use the Makefile, open your terminal, navigate to your project directory (where the Makefile is located), and run the desired target. For example:
+base_url = os.environ.get("BASE_URL")
+api_endpoint = os.environ.get("API_ENDPOINT")
+secret_key = os.environ.get("SECRET_KEY")
+api_key = os.environ.get("API_KEY")
 
-- To install dependencies:
-    ``` bash
-    make install
-    ```
-- To run tests:
-    ``` bash
-    make test
-    ```
-- To build the package:
-    ``` bash
-    make build
-    ```
-- To upload the package to PyPI:
-    ``` bash
-    make upload
-    ```
-- To clean build artifacts:
-    ``` bash
-    make clean
-    ```
+print(f"Base URL: {base_url}")
+print(f"API Endpoint: {api_endpoint}")
+print(f"Secret Key: {secret_key}")
+print(f"API Key: {api_key}")
+```
 
-## License
-
-MIT License
+### Output
