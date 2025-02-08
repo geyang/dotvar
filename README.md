@@ -4,23 +4,30 @@ A simple Python module to load environment variables from a `.env` file with rob
 
 ## Rationale
 
-Managing environment variables is essential for configuring applications without hardcoding sensitive information. Using a `.env` file
-centralizes configuration parameters, enhancing security and maintainability.
+Managing environment variables through a `.env` file streamlines application configuration.
 
 ### The Problem with `python-dotenv`
 
 While `python-dotenv` is a popular choice for loading environment variables, it has a notable limitation: **it does not support variable
 interpolation**. This means that environment variables cannot reference other variables within the `.env` file, leading to redundancies and
-increased potential for errors. For example:
+increased potential for errors. 
+
+For example, the `CACHE_DIR` variable in the following `.env` file would not automatically resolve to
+`$HOME/.cache/myapp`. In fact, your app will create a `$HOME` directory.
+
+```env
+CACHE_DIR=$HOME/.cache/myapp
+```
+
+In the following example, `python-dotenv` will not resolve `API_ENDPOINT` to `https://api.example.com/v1/`,
+requiring manual variable exapantion in your code.
 
 ```env
 BASE_URL=https://api.example.com
 API_ENDPOINT=${BASE_URL}/v1/
 ```
 
-In `python-dotenv`, `API_ENDPOINT` would not automatically resolve to `https://api.example.com/v1/`, requiring manual concatenation in your
-code:
-
+**python:**
 ```python
 import os
 
