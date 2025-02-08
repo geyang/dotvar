@@ -2,15 +2,9 @@
 
 A simple Python module to load environment variables from a `.env` file with robust interpolation support.
 
-## Rationale
+### The Problems with `python-dotenv`
 
-Managing environment variables through a `.env` file streamlines application configuration.
-
-### The Problem with `python-dotenv`
-
-While `python-dotenv` is a popular choice for loading environment variables, it has a notable limitation: **it does not support variable
-interpolation**. This means that environment variables cannot reference other variables within the `.env` file, leading to redundancies and
-increased potential for errors. 
+The De facto `python-dotenv` loads environment variables, but it has two limitations: First, it does not support `auto_load` upon import. Two, **it does not support variable interpolation** within the `.env` file. This means that environment variables cannot reference other variables within the `.env` file, leading to increased potential for errors.
 
 For example, the `CACHE_DIR` variable in the following `.env` file would not automatically resolve to
 `$HOME/.cache/myapp`. In fact, your app will create a `$HOME` directory.
@@ -27,7 +21,6 @@ BASE_URL=https://api.example.com
 API_ENDPOINT=${BASE_URL}/v1/
 ```
 
-**python:**
 ```python
 import os
 
@@ -35,13 +28,17 @@ base_url = os.environ.get("BASE_URL")
 api_endpoint = os.environ.get("API_ENDPOINT")  # Would be "${BASE_URL}/v1/" instead of the resolved URL
 ```
 
-This lack of interpolation support can lead to repetitive configurations and make the environment setup less intuitive.
-
 ## Introducing `dotvar`
 
-`dotvar` addresses the limitations of `python-dotenv` by providing **robust variable interpolation** capabilities. This feature allows
-environment variables to reference and build upon each other within the `.env` file, promoting DRY (Don't Repeat Yourself) principles and
-reducing redundancy.
+`dotvar` addresses the limitations of `python-dotenv` by
+
+1. providing **robust variable interpolation** capabilities. This feature allows environment variables to reference and build upon each other within the `.env` file, promoting DRY (Don't Repeat Yourself) principles and reducing redundancy.
+2. provide the optional `dotenv.auto_load` entrypoint, to allow **loading upon import**. Use the `noinspection` and `# noqa` tags to avoid pyCharm from removing the import. (And switch to pyCharm if you are using vscode.)
+
+   ```python
+   # noinspection PyUnresolvedReferences
+   import dotvar.auto_load  # noqa
+   ```
 
 ## Installation
 
@@ -60,6 +57,16 @@ dotvar.load_env()
 # Or specify the path to the .env file
 dotvar.load_env(env_path="/path/to/your/.env")
 ```
+
+## Auto Loading Upon Import
+
+We provide an optional `dotenv.auto_load` entrypoint. Use the `noinspection` and `# noqa` tags to avoid pyCharm from removing the import. (And switch to pyCharm if you are using vscode.)
+
+```python
+# noinspection PyUnresolvedReferences
+import dotvar.auto_load  # noqa
+```
+
 
 ## Interpolated Variables
 
@@ -112,16 +119,12 @@ differences that set `dotvar` apart:
 
 - **Variable Interpolation**: Unlike `python-dotenv`, `dotvar` natively supports variable interpolation, allowing environment variables to
   reference other variables within the `.env` file. This reduces redundancy and enhances readability.
-
 - **Simplicity and Lightweight**: `dotvar` is designed to be lightweight with minimal dependencies, making it ideal for projects that
   require a straightforward solution without the overhead of additional features.
-
 - **Performance**: `dotvar` is optimized for faster loading of environment variables, which can be beneficial in large projects or
   applications where startup time is critical.
-
 - **Error Handling**: `dotvar` includes improved error handling mechanisms to provide clearer feedback when issues arise in the `.env` file,
   such as missing variables or invalid formats.
-
 - **Customization**: `dotvar` allows for greater customization in how environment variables are loaded and managed, offering developers more
   control over the configuration process.
 
@@ -255,25 +258,25 @@ To use the Makefile, open your terminal, navigate to your project directory (whe
 example:
 
 - To install dependencies:
-    ```bash
-    make install
-    ```
+  ```bash
+  make install
+  ```
 - To run tests:
-    ```bash
-    make test
-    ```
+  ```bash
+  make test
+  ```
 - To build the package:
-    ```bash
-    make build
-    ```
+  ```bash
+  make build
+  ```
 - To upload the package to PyPI:
-    ```bash
-    make upload
-    ```
+  ```bash
+  make upload
+  ```
 - To clean build artifacts:
-    ```bash
-    make clean
-    ```
+  ```bash
+  make clean
+  ```
 
 ## License
 
