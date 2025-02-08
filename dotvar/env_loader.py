@@ -1,8 +1,7 @@
-# dotvar/env_loader.py
-
 import os
-from pathlib import Path
 import re
+from pathlib import Path
+
 
 def find_env_file(start_path=None, env_filename=".env"):
     """
