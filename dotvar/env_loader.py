@@ -1,6 +1,7 @@
 import os
 import re
 from pathlib import Path
+import logging
 
 
 def find_env_file(start_path=None, env_filename=".env"):
@@ -21,6 +22,7 @@ def find_env_file(start_path=None, env_filename=".env"):
         if env_path.is_file():
             return env_path
     return None
+
 
 def parse_env_file(env_path):
     """
@@ -45,12 +47,14 @@ def parse_env_file(env_path):
                 env_vars[key] = os.path.expandvars(value)
     return env_vars
 
-def load_env(env_path=None, env_filename=".env"):
+
+def load_env(env_path=None, env_filename=".env", strict=False):
     """
     Load environment variables from a .env file into os.environ.
 
     :param env_path: Optional path to the .env file.
     :param env_filename: The name of the environment file if env_path is not provided.
+    :param strict: If True, raises FileNotFoundError when no env file is found. Otherwise just logs a warning.
     """
     if env_path:
         env_file = Path(env_path)
@@ -59,7 +63,11 @@ def load_env(env_path=None, env_filename=".env"):
     else:
         env_file = find_env_file(env_filename=env_filename)
         if not env_file:
-            raise FileNotFoundError(f"No .env file found starting from {Path.cwd()}")
+            if strict:
+                raise FileNotFoundError(f"No .env file found starting from {Path.cwd()}")
+            else:
+                logging.warning(f"No .env file found starting from {Path.cwd()}")
+                return  # Early return when no env file is found and not in strict mode
 
     env_vars = parse_env_file(env_file)
     os.environ.update(env_vars)

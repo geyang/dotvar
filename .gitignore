@@ -19,9 +19,19 @@ __pycache__/
 build/
 dist/
 
+# Poetry
+poetry.lock
+
+# Coverage
+.coverage
+htmlcov/
+
 # Virtual environments
 .venv/
 .env/
 ENV/
 env/
+
+# Pytest
+.pytest_cache/
 

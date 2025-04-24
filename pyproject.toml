@@ -1,0 +1,30 @@
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "dotvar"
+version = "0.1.1"  # From VERSION file
+authors = ["Ge Yang <ge.ike.yang@gmail.com>"]
+description = "A simple module to load environment variables from a .env file"
+readme = "README.md"
+license = "MIT"
+repository = "https://github.com/geyang/dotvar"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+packages = [{include = "dotvar"}]
+
+[tool.poetry.dependencies]
+python = ">=3.9"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.5"
+pytest-cov = "^6.1.1"
+pytest-runner = "^6.0.1"
+
+[tool.pytest.ini_options]
+testpaths = ["dotvar/__tests__"]
+python_files = ["test_*.py"] 

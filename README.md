@@ -2,7 +2,7 @@
 
 A simple Python module to load environment variables from a `.env` file with robust interpolation support.
 
-### The Problems with `python-dotenv`
+## The Problems with `python-dotenv`
 
 The De facto `python-dotenv` loads environment variables, but it has two limitations: First, it does not support `auto_load` upon import. Two, **it does not support variable interpolation** within the `.env` file. This means that environment variables cannot reference other variables within the `.env` file, leading to increased potential for errors.
 
@@ -14,7 +14,7 @@ CACHE_DIR=$HOME/.cache/myapp
 ```
 
 In the following example, `python-dotenv` will not resolve `API_ENDPOINT` to `https://api.example.com/v1/`,
-requiring manual variable exapantion in your code.
+requiring manual variable expansion in your code.
 
 ```env
 BASE_URL=https://api.example.com
@@ -30,10 +30,10 @@ api_endpoint = os.environ.get("API_ENDPOINT")  # Would be "${BASE_URL}/v1/" inst
 
 ## Introducing `dotvar`
 
-`dotvar` addresses the limitations of `python-dotenv` by
+`dotvar` addresses the limitations of `python-dotenv` by:
 
-1. providing **robust variable interpolation** capabilities. This feature allows environment variables to reference and build upon each other within the `.env` file, promoting DRY (Don't Repeat Yourself) principles and reducing redundancy.
-2. provide the optional `dotenv.auto_load` entrypoint, to allow **loading upon import**. Use the `noinspection` and `# noqa` tags to avoid pyCharm from removing the import. (And switch to pyCharm if you are using vscode.)
+1. Providing **robust variable interpolation** capabilities. This feature allows environment variables to reference and build upon each other within the `.env` file, promoting DRY (Don't Repeat Yourself) principles and reducing redundancy.
+2. Providing the optional `dotvar.auto_load` entrypoint, to allow **loading upon import**. Use the `noinspection` and `# noqa` tags to avoid PyCharm from removing the import.
 
    ```python
    # noinspection PyUnresolvedReferences
@@ -56,17 +56,26 @@ dotvar.load_env()
 
 # Or specify the path to the .env file
 dotvar.load_env(env_path="/path/to/your/.env")
+
+# Use strict mode to raise an error if .env file is not found
+dotvar.load_env(strict=True)
 ```
 
 ## Auto Loading Upon Import
 
-We provide an optional `dotenv.auto_load` entrypoint. Use the `noinspection` and `# noqa` tags to avoid pyCharm from removing the import. (And switch to pyCharm if you are using vscode.)
+We provide an optional `dotvar.auto_load` entrypoint. Use the `noinspection` and `# noqa` tags to avoid PyCharm from removing the import.
 
 ```python
 # noinspection PyUnresolvedReferences
 import dotvar.auto_load  # noqa
 ```
 
+For strict mode (raises an error if no .env file is found):
+
+```python
+# noinspection PyUnresolvedReferences
+import dotvar.auto_load_strict  # noqa
+```
 
 ## Interpolated Variables
 
@@ -106,8 +115,8 @@ print(f"API Key: {api_key}")
 ### Output
 
 ```
-Base URL: [https://api.example.com](https://api.example.com)
-API Endpoint: [https://api.example.com/v1/](https://api.example.com/v1/)
+Base URL: https://api.example.com
+API Endpoint: https://api.example.com/v1/
 Secret Key: s3cr3t 
 API Key: s3cr3t_api
 ```
@@ -132,100 +141,13 @@ Choosing between `dotvar` and `python-dotenv` depends on the specific needs of y
 with robust interpolation and customization options, `dotvar` is the ideal choice. On the other hand, if your project already heavily
 integrates with `python-dotenv` and you rely on its specific features, it may be more practical to continue using it.
 
-## Autoload Feature
+## Detailed Examples
 
-`dotvar` offers an **autoload** feature that automatically loads environment variables without requiring explicit calls to `load_env()` in
-your code. This ensures that environment variables are available as soon as your application starts, simplifying the configuration process.
-
-### Enabling Autoload
-
-To enable the autoload feature, simply import `dotvar` at the beginning of your application's entry point. `dotvar` will automatically
-detect and load the `.env` file without any additional function calls.
+### Basic Auto-loading 
 
 ```python
-import dotvar
-import os
-
-# Environment variables are automatically loaded
-database_url = os.environ.get("DATABASE_URL")
-secret_key = os.environ.get("SECRET_KEY")
-debug_mode = os.environ.get("DEBUG")
-api_key = os.environ.get("API_KEY")
-
-print(f"Database URL: {database_url}")
-print(f"Secret Key: {secret_key}")
-print(f"Debug Mode: {debug_mode}")
-print(f"API Key: {api_key}")
-```
-
-### Testing Autoload
-
-To ensure that the autoload feature is working correctly, you can write tests that verify environment variables are loaded automatically
-upon application startup.
-
-#### Example Test Using `pytest`
-
-```python
-# tests/test_autoload.py
-
-import os
-import pytest
-import tempfile
-
-# this automatically loads the env vars
-from dotvar import autoload
-
-@pytest.fixture
-def temp_env_file_autoload(monkeypatch):
-    # Create a temporary .env file
-    temp_dir = tempfile.TemporaryDirectory()
-    env_path = os.path.join(temp_dir.name, ".env")
-    with open(env_path, "w") as f:
-        f.write("""
-        # Sample .env file with autoload
-        DATABASE_URL=postgres://user:password@localhost:5432/dbname
-        SECRET_KEY=s3cr3t
-        DEBUG=True
-        API_KEY=${SECRET_KEY}_api
-        """)
-    # Mock the path to the .env file
-    monkeypatch.setattr(dotvar, 'find_env_path', lambda: env_path)
-    # Importing dotvar will trigger autoload
-    import dotvar
-    yield env_path
-    temp_dir.cleanup()
-
-
-def test_autoload(temp_env_file_autoload):
-    database_url = os.environ.get("DATABASE_URL")
-    secret_key = os.environ.get("SECRET_KEY")
-    debug_mode = os.environ.get("DEBUG")
-    api_key = os.environ.get("API_KEY")
-
-    assert database_url == "postgres://user:password@localhost:5432/dbname"
-    assert secret_key == "s3cr3t"
-    assert debug_mode == "True"
-    assert api_key == "s3cr3t_api"
-```
-
-#### Running the Test
-
-To run the test, navigate to your project directory and execute:
-
-```bash
-pytest tests/test_autoload.py
-```
-
-If the autoload feature is functioning correctly, all assertions should pass, confirming that environment variables are loaded
-automatically.
-
-## A Detailed Example
-
-```python
-import dotvar
-
-# Autoload is enabled by simply importing dotvar
-# No need to call load_env()
+# Auto-load is enabled by simply importing the module
+import dotvar.auto_load
 
 # Now you can access the variables via os.environ
 import os
@@ -241,42 +163,85 @@ print(f"Debug Mode: {debug_mode}")
 print(f"API Key: {api_key}")
 ```
 
-## To Develop:
+### Testing Examples
 
-### Description of Makefile Targets
+```python
+# tests/test_auto_load.py
 
-- **help**: Displays available Makefile targets.
-- **install**: Installs or upgrades the necessary packaging tools (`pip`, `setuptools`, `wheel`, and `twine`).
-- **test**: Runs the test suite using `pytest`.
-- **build**: Builds the source and wheel distribution packages.
-- **clean**: Removes build artifacts to ensure a clean state.
-- **upload**: Uploads the built distribution packages to PyPI using `twine`. This target depends on the `build` target.
+import os
+import sys
+import tempfile
+import pytest
 
-### Usage
+def test_auto_load_with_env_file(monkeypatch):
+    """
+    Tests that environment variables are automatically loaded when dotvar.auto_load is imported.
+    """
+    # Create a temporary directory with a .env file
+    with tempfile.TemporaryDirectory() as temp_dir:
+        env_content = """
+        DATABASE_URL=postgres://user:password@localhost:5432/dbname
+        SECRET_KEY=s3cr3t
+        DEBUG=True
+        API_KEY=${SECRET_KEY}_api
+        """
+        env_path = os.path.join(temp_dir, ".env")
+        with open(env_path, "w") as f:
+            f.write(env_content)
+            
+        # Change directory to the temp dir
+        monkeypatch.chdir(temp_dir)
+        
+        # Import the auto_load module
+        if 'dotvar.auto_load' in sys.modules:
+            del sys.modules['dotvar.auto_load']
+            
+        import dotvar.auto_load
+        
+        # Verify the environment variables
+        assert os.environ.get("DATABASE_URL") == "postgres://user:password@localhost:5432/dbname"
+        assert os.environ.get("SECRET_KEY") == "s3cr3t"
+        assert os.environ.get("DEBUG") == "True"
+        assert os.environ.get("API_KEY") == "s3cr3t_api"
+```
 
-To use the Makefile, open your terminal, navigate to your project directory (where the Makefile is located), and run the desired target. For
-example:
+## Development
 
-- To install dependencies:
-  ```bash
-  make install
-  ```
-- To run tests:
-  ```bash
-  make test
-  ```
-- To build the package:
-  ```bash
-  make build
-  ```
-- To upload the package to PyPI:
-  ```bash
-  make upload
-  ```
-- To clean build artifacts:
-  ```bash
-  make clean
-  ```
+This project uses [Poetry](https://python-poetry.org/) for dependency management and packaging. Here's how to set up a development environment:
+
+1. Install Poetry if you don't have it already:
+   ```bash
+   pip install poetry
+   ```
+
+2. Clone the repository and install dependencies:
+   ```bash
+   git clone https://github.com/geyang/dotvar.git
+   cd dotvar
+   poetry install
+   ```
+
+3. Run tests:
+   ```bash
+   # Run tests
+   poetry run pytest
+   
+   # Run tests with verbose output
+   poetry run pytest -v
+   
+   # Run tests with coverage report
+   poetry run pytest --cov=dotvar --cov-report=term-missing
+   ```
+
+4. Build the package:
+   ```bash
+   poetry build
+   ```
+
+5. Publish to PyPI (for maintainers):
+   ```bash
+   poetry publish --build
+   ```
 
 ## License
 
