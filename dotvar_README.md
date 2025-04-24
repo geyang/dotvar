@@ -2,37 +2,7 @@
 
 `dotvar` is a Python module that improves upon traditional `.env` loaders by providing **automatic loading** and **native variable interpolation**, solving the major shortcomings of `python-dotenv`.
 
-**Differences from `python-dotenv`:**
-
-- ✅ **Built-in Interpolation**: Reference other variables within `.env`.
-- ✅ **Option to Auto-load**: The option to load upon import, with no extra calls.
-- ✅ **Strict Mode**: Catch missing `.env` files early.
-- ✅ **No Dependencies**: Pure Python, standard library only.
-- ✅ **Lightweight & Fast**: Minimal footprint, optimized load time.
-
-## How to Use
-
-1. place a `.env` in your current folder
-2. you can run `load_env` or simply import `dotvar.auto_load` which has the side-effect of calling `load_env`
-    ```python
-    import dotvar.auto_load  # noqa
-    ```
-    Alternatively, there is also a `strict` mode, that raises an error if an environment file is not found.
-    ```python
-    import dotvar.auto_load_strict  # noqa
-    ```
-
-**Alternative syntax**
-
-If the import side-effect is undesirable, you can import the `load_env` function and call it imperatively.
-The import here will NOT have a side-effect.
-
-```python
-from dotvar import load_env
-
-load_env(strict=False)
-```
-The strict flag defautls to False.
+---
 
 ## The Problems with `python-dotenv`
 
@@ -55,7 +25,7 @@ print(os.environ.get("API_ENDPOINT"))  # Returns "${BASE_URL}/v1/" instead of th
 
 ---
 
-### Introducing `dotvar`
+## Introducing `dotvar`
 
 `dotvar` solves these issues by:
 
@@ -65,13 +35,15 @@ print(os.environ.get("API_ENDPOINT"))  # Returns "${BASE_URL}/v1/" instead of th
 
 ---
 
-### Installation and Examples
+## Installation
 
 ```bash
 pip install dotvar  # supports Python 3.7+
 ```
 
-**An Example:**
+---
+
+## Usage
 
 Place a `.env` file in your project root:
 
@@ -99,6 +71,16 @@ To use strict mode:
 ```python
 import dotvar.auto_load_strict  # noqa
 ```
+
+---
+
+## Differences from `python-dotenv`
+
+- ✅ **Built-in Interpolation**: Reference other variables within `.env`.
+- ✅ **Auto-load**: Load on import with no extra calls.
+- ✅ **Strict Mode**: Catch missing files early in development.
+- ✅ **No Dependencies**: Pure Python, standard library only.
+- ✅ **Lightweight & Fast**: Minimal footprint, optimized load time.
 
 ---
 
