@@ -2,20 +2,37 @@
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
-[tool.poetry]
+[project]
 name = "dotvar"
-version = "0.1.1"  # From VERSION file
-authors = ["Ge Yang <ge.ike.yang@gmail.com>"]
+version = "0.1.2"  # From VERSION file
+authors = [
+    {name = "Ge Yang", email = "ge.ike.yang@gmail.com"}
+]
 description = "A simple module to load environment variables from a .env file"
 readme = "README.md"
-license = "MIT"
-repository = "https://github.com/geyang/dotvar"
+license = {text = "MIT"}
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
-packages = [{include = "dotvar"}]
+packages = [{ include = "dotvar" }]
+
+[project.optional-dependencies]
+# add the cors package, not needed in pyScript
+dev = [
+    # these are needed for the doc site
+    "pylint==2.13.4",
+    "pytest",
+    "sphinx==7.1.2",
+    "furo",
+    "sphinx-autobuild",
+    "sphinx_copybutton",
+    "sphinxcontrib-video",
+    "myst_parser",
+    "trimesh",
+]
+
 
 [tool.poetry.dependencies]
 python = ">=3.9"
@@ -27,4 +44,4 @@ pytest-runner = "^6.0.1"
 
 [tool.pytest.ini_options]
 testpaths = ["dotvar/__tests__"]
-python_files = ["test_*.py"] 
+python_files = ["test_*.py"]
