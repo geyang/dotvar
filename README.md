@@ -104,17 +104,17 @@ import dotvar.auto_load_strict  # noqa
 
 ## Development
 
-This project uses [Poetry](https://python-poetry.org/) for dependency management.
+This project uses [uv](https://docs.astral.sh/uv/) for dependency management.
 
 ```bash
 # Set up environment
-poetry install
+uv sync
 
 # Run all tests
-poetry run pytest
+uv run pytest
 
 # Run with coverage
-poetry run pytest --cov=dotvar --cov-report=term-missing
+uv run pytest --cov=dotvar --cov-report=term-missing
 ```
 
 ---

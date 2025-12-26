@@ -1,47 +1,37 @@
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
 name = "dotvar"
-version = "0.1.2"  # From VERSION file
+version = "0.1.12"
 authors = [
     {name = "Ge Yang", email = "ge.ike.yang@gmail.com"}
 ]
 description = "A simple module to load environment variables from a .env file"
 readme = "README.md"
 license = {text = "MIT"}
+requires-python = ">=3.9"
 classifiers = [
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
-packages = [{ include = "dotvar" }]
 
-[project.optional-dependencies]
-# add the cors package, not needed in pyScript
+[dependency-groups]
 dev = [
-    # these are needed for the doc site
-    "pylint==2.13.4",
-    "pytest",
-    "sphinx==7.1.2",
-    "furo",
-    "sphinx-autobuild",
-    "sphinx_copybutton",
-    "sphinxcontrib-video",
-    "myst_parser",
-    "trimesh",
+    "pytest>=8.0",
+    "pytest-cov>=6.0",
 ]
 
-
-[tool.poetry.dependencies]
-python = ">=3.9"
-
-[tool.poetry.group.dev.dependencies]
-pytest = "^8.3.5"
-pytest-cov = "^6.1.1"
-pytest-runner = "^6.0.1"
+[tool.hatch.build.targets.wheel]
+packages = ["src/dotvar"]
 
 [tool.pytest.ini_options]
-testpaths = ["dotvar/__tests__"]
+testpaths = ["tests"]
 python_files = ["test_*.py"]
