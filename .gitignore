@@ -19,8 +19,7 @@ __pycache__/
 build/
 dist/
 
-# Poetry
-poetry.lock
+# Note: uv.lock should be committed to version control
 
 # Coverage
 .coverage
