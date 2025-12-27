@@ -12,10 +12,16 @@
 
 ## Claude Code Skill
 
-If you use [Claude Code](https://claude.com/claude-code), you can install the dotvar skill:
+If you use [Claude Code](https://claude.com/claude-code), add the dotvar skill to your `CLAUDE.md`:
 
-```bash
-claude install-skill https://github.com/geyang/dotvar
+```markdown
+# add https://raw.githubusercontent.com/geyang/dotvar/main/skill/dotvar.md as a skill
+```
+
+or
+
+```markdown
+@import https://raw.githubusercontent.com/geyang/dotvar/main/skill/dotvar.md
 ```
 
 This teaches Claude how to use dotvar in your projects.
