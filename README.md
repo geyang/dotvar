@@ -10,6 +10,16 @@
 - ✅ **No Dependencies**: Pure Python, standard library only.
 - ✅ **Lightweight & Fast**: Minimal footprint, optimized load time.
 
+## Claude Code Skill
+
+If you use [Claude Code](https://claude.com/claude-code), you can install the dotvar skill:
+
+```bash
+claude install-skill https://github.com/geyang/dotvar
+```
+
+This teaches Claude how to use dotvar in your projects.
+
 ## How to Use
 
 1. place a `.env` in your current folder
@@ -68,7 +78,7 @@ print(os.environ.get("API_ENDPOINT"))  # Returns "${BASE_URL}/v1/" instead of th
 ### Installation and Examples
 
 ```bash
-pip install dotvar  # supports Python 3.7+
+pip install dotvar  # supports Python 3.9+
 ```
 
 **An Example:**
